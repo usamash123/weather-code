@@ -210,7 +210,7 @@ class Wind {
         this.deg,
     });
 
-    int? speed;
+    var speed;
     int? deg;
 
     factory Wind.fromJson(Map<String, dynamic> json) => Wind(
