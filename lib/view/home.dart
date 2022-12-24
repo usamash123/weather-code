@@ -17,16 +17,16 @@ class _HomeState extends State<Home> {
   final citycontroller = TextEditingController();
   void initState() {
     super.initState();
-    getweathercity();
+    getWeatherCity();
   }
 
   var data;
   WeatherModel? selectedWeather;
 
-  getweathercity() async {
-    var data = await ApiManager.getWeather("lahore");
-
+  getWeatherCity() async {
+    var data = await ApiManager.getWeather(" ${citycontroller.text.isNotEmpty ? citycontroller.text: 'lahore'} ");
     selectedWeather = WeatherModel.fromJson(data);
+    print(selectedWeather);
     setState(() {});
     
   }
@@ -36,6 +36,9 @@ class _HomeState extends State<Home> {
     var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          getWeatherCity();
+        }),
         body: Column(
           children: [
             Container(
@@ -57,6 +60,9 @@ class _HomeState extends State<Home> {
                         child: customtxtfld(citycontroller),
                       ),
                     ),
+                    ElevatedButton.icon(onPressed: (){
+                      getWeatherCity();
+                    }, icon: Icon(Icons.ads_click), label: Text("Fetch weather") ),
                     Row(
                       children: [
                         customtext("${citycontroller.text}"),
@@ -65,8 +71,8 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //  selectWeather== null? CircularProgressIndicator.adaptive():
-                        customtext("${selectedWeather!.main!.temp}°C")
+                         selectedWeather == null? CircularProgressIndicator.adaptive():
+                         customtext("${selectedWeather!.main!.temp}°C")
                       ],
                     )
                   ],
@@ -75,6 +81,7 @@ class _HomeState extends State<Home> {
             )
           ],
         ),
+      
       ),
     );
   }
